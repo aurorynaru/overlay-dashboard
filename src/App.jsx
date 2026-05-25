@@ -19,7 +19,12 @@ const commandInstructions = {
   '!editcommand': 'Edit custom command cost/cooldown (Admin). Usage: !editcommand <cmd> <setting> <value>',
   '!duel': 'Challenge another user for points! Usage: !duel @user <amount>',
   '!acceptduel': 'Accept a pending duel request.',
-  '!declineduel': 'Decline a pending duel request.'
+  '!declineduel': 'Decline a pending duel request.',
+  '!disable': '!disable a command. Usage !disable  <cmd> optional<time>. sample !disable !playsound 10m',
+  '!enable': 'Enable a command. Usage !enable <cmd>.  sample !enable !playsound',
+  '!raffle': 'Start a raffle. Usage !raffle <points amount> <time_in_minutes>',
+  '!multiraffle': 'Start a multi-winner raffle. Usage !multiraffle <points amount> <time_in_minutes> <number_of_winners>',
+  '!join': 'Join a raffle. Usage !join'
 };
 
 function App() {
