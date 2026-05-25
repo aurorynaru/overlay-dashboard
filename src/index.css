@@ -356,6 +356,11 @@ body {
   background: var(--accent-hover);
 }
 
+.sort-controls select option {
+  background-color: var(--panel-bg);
+  color: var(--text-main);
+}
+
 @media (max-width: 768px) {
   .sticky-header {
     flex-direction: column;
