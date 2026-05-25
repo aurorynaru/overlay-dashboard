@@ -31,6 +31,7 @@ function App() {
   const [collapsed, setCollapsed] = useState({ builtIn: false, custom: false, sounds: false });
   const [copiedId, setCopiedId] = useState(null);
   const [volume, setVolume] = useState(0.2); // Default 20% volume
+  const [soundSortBy, setSoundSortBy] = useState('date-desc');
   
   const [playingSound, setPlayingSound] = useState(null);
   const audioRef = useRef(new Audio());
@@ -101,7 +102,14 @@ function App() {
 
   const filteredDefaults = data.defaultCommands.filter(c => c.command.toLowerCase().includes(searchTerm.toLowerCase()));
   const filteredCustoms = data.customCommands.filter(c => c.command.toLowerCase().includes(searchTerm.toLowerCase()) || c.action.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredSounds = data.sounds.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredSounds = data.sounds
+    .filter(s => (s.filename || '').toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      if (soundSortBy === 'name-asc') return (a.filename || '').localeCompare(b.filename || '');
+      if (soundSortBy === 'name-desc') return (b.filename || '').localeCompare(a.filename || '');
+      if (soundSortBy === 'date-asc') return (a.uploadedAt || 0) - (b.uploadedAt || 0);
+      return (b.uploadedAt || 0) - (a.uploadedAt || 0); // default: date-desc
+    });
 
   return (
     <div className="dashboard-container">
@@ -197,13 +205,31 @@ function App() {
 
           {/* Sounds Section */}
           <div className="section">
-            <h2 onClick={() => toggleSection('sounds')}>
-              {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
-              <Volume2 size={24} style={{marginRight: '8px'}}/> Available Playsounds ({filteredSounds.length})
-            </h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => toggleSection('sounds')}>
+              <h2 style={{ margin: 0, display: 'flex', alignItems: 'center' }}>
+                {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
+                <Volume2 size={24} style={{marginRight: '8px'}}/> Available Playsounds ({filteredSounds.length})
+              </h2>
+              {!collapsed.sounds && (
+                <div className="sort-controls" style={{ display: 'flex', gap: '10px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
+                  <label style={{ color: 'var(--text-muted)' }}>Sort by:</label>
+                  <select 
+                    value={soundSortBy} 
+                    onChange={(e) => setSoundSortBy(e.target.value)}
+                    style={{ background: 'var(--bg-secondary)', color: 'white', border: '1px solid var(--border-color)', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
+                  >
+                    <option value="date-desc">Date (Newest)</option>
+                    <option value="date-asc">Date (Oldest)</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                  </select>
+                </div>
+              )}
+            </div>
             <div className={`section-content ${collapsed.sounds ? 'collapsed' : ''}`}>
               <div className="grid">
-                {filteredSounds.map(sound => {
+                {filteredSounds.map(soundObj => {
+                  const sound = soundObj.filename;
                   const soundName = sound.split('.').slice(0, -1).join('.');
                   const commandStr = `!playsound ${soundName}`;
                   return (
