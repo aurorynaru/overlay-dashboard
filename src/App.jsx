@@ -108,7 +108,7 @@ function App() {
       if (soundSortBy === 'name-asc') return (a.filename || '').localeCompare(b.filename || '');
       if (soundSortBy === 'name-desc') return (b.filename || '').localeCompare(a.filename || '');
       if (soundSortBy === 'date-asc') return (a.uploadedAt || 0) - (b.uploadedAt || 0);
-      return (b.uploadedAt || 0) - (a.uploadedAt || 0); // default: date-desc
+      return (b.uploadedAt || 0) - (a.uploadedAt || 0); 
     });
 
   return (
@@ -146,7 +146,7 @@ function App() {
         <div className="loading">Connecting to server...</div>
       ) : (
         <>
-          {/* Built-in Commands */}
+       
           <div className="section">
             <h2 onClick={() => toggleSection('builtIn')}>
               {collapsed.builtIn ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
@@ -178,7 +178,7 @@ function App() {
             </div>
           </div>
 
-          {/* Custom Commands */}
+     
           <div className="section">
             <h2 onClick={() => toggleSection('custom')}>
               {collapsed.custom ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
@@ -203,7 +203,7 @@ function App() {
             </div>
           </div>
 
-          {/* Sounds Section */}
+
           <div className="section">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => toggleSection('sounds')}>
               <h2 style={{ margin: 0, display: 'flex', alignItems: 'center' }}>
