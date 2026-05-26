@@ -30,6 +30,7 @@ const commandInstructions = {
   '!masspointsadd': 'Add points to all users who chatted in the last <time>. Usage !masspointsadd <amount> <time>. sample !masspointsadd 1000 10m',
   '!masspointssub': 'Remove points from all users who chatted in the last <time>. Usage !masspointssub <amount> <time>. sample !masspointssub 1000 10m',
   '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s',  
+  '!givepoints': 'Give points to users. Usage !givepoints <amount> <username>. sample !givepoints 50 username',
 };
 
 function App() {
