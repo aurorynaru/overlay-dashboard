@@ -27,9 +27,9 @@ const commandInstructions = {
   '!join': 'Join a raffle. Usage !join',
   '!toppoints': 'Display the top point earners. Usage: !toppoints [number] (default: 5)',
   '!editpoints': 'Edit user points. Usage: !editpoints <username> <amount>',
-  '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s',  
   '!masspointsadd': 'Add points to all users who chatted in the last <time>. Usage !masspointsadd <amount> <time>. sample !masspointsadd 1000 10m',
   '!masspointssub': 'Remove points from all users who chatted in the last <time>. Usage !masspointssub <amount> <time>. sample !masspointssub 1000 10m',
+  '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s',  
 };
 
 function App() {
