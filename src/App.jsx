@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown, ChevronRight, Copy } from 'lucide-react';
 
 const commandInstructions = {
   '!playsound': 'Play an audio file. Usage: !playsound <sound_name>',
@@ -24,7 +24,9 @@ const commandInstructions = {
   '!enable': 'Enable a command. Usage !enable <cmd>.  sample !enable !playsound',
   '!raffle': 'Start a raffle. Usage !raffle <points amount> <time_in_minutes>',
   '!multiraffle': 'Start a multi-winner raffle. Usage !multiraffle <points amount> <time_in_minutes> <number_of_winners>',
-  '!join': 'Join a raffle. Usage !join'
+  '!join': 'Join a raffle. Usage !join',
+  '!toppoints': 'Display the top point earners. Usage: !toppoints [number] (default: 5)',
+  '!editpoints': 'Edit user points. Usage: !editpoints <username> <amount>',
 };
 
 function App() {
@@ -164,6 +166,7 @@ function App() {
                     {copiedId === cmd.command && <div className="copy-toast">Copied!</div>}
                     <div className="card-header">
                       <h3 className="card-title">{cmd.command}</h3>
+                      <Copy size={18} className="copy-icon" />
                     </div>
                     {commandInstructions[cmd.command] && (
                       <div className="card-instruction">{commandInstructions[cmd.command]}</div>
@@ -196,7 +199,10 @@ function App() {
                     {copiedId === cmd.command && <div className="copy-toast">Copied!</div>}
                     <div className="card-header">
                       <h3 className="card-title">{cmd.command}</h3>
-                      <span className="badge">{cmd.cost} pts</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span className="badge">{cmd.cost} pts</span>
+                        <Copy size={18} className="copy-icon" />
+                      </div>
                     </div>
                     <div className="card-body">
                       {cmd.action}
@@ -247,6 +253,7 @@ function App() {
                         <p className="sound-name" title={soundName}>{soundName}</p>
                         <p className="sound-command">{commandStr}</p>
                       </div>
+                      <Copy size={18} className="copy-icon" />
                     </div>
                   )
                 })}
