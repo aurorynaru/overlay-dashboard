@@ -5,7 +5,7 @@ import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown
 const commandInstructions = {
   '!playsound': 'Play an audio file. Usage: !playsound <sound_name>',
   '!showemote': 'Display an emote on the overlay. Usage: !showemote <emote>',
-  '!betstart': 'Start a betting session. Usage: !betstart <time_in_seconds> <choice1,choice2> <Description>',
+  '!betstart': 'Start a betting session. Usage: !betstart <Description> <choice1,choice2> <time_in_seconds> ',
   '!betstop': 'Resolve a bet. Usage: !betstop <winning_choice>',
   '!betstatus': 'Check current bet info. Usage: !betstatus',
   '!points': 'Check your points. Usage: !points',
