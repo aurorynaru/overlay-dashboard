@@ -31,6 +31,7 @@ const commandInstructions = {
   '!masspointssub': 'Remove points from all users who chatted in the last <time>. Usage !masspointssub <amount> <time>. sample !masspointssub 1000 10m',
   '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s or !chatcooldown !playsound 10s',
   '!givepoints': 'Give points to users. Usage !givepoints <amount> <username>. sample !givepoints 50 username',
+  '!deleteplaysound': 'Delete a playsound. Usage !deleteplaysound <soundname>. sample !deleteplaysound 5dollars',
 };
 
 function App() {
