@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown, ChevronRight, Copy } from 'lucide-react';
+import Leaderboards from './components/Leaderboards';
 
 const commandInstructions = {
   '!playsound': 'Play an audio file. Usage: !playsound <sound_name>',
@@ -62,12 +63,21 @@ const builtInAliases = {
 };
 
 function App() {
-  const [data, setData] = useState({ defaultCommands: [], customCommands: [], sounds: [], rewards: {} });
+  const [data, setData] = useState({ defaultCommands: [], customCommands: [], sounds: [], rewards: {}, userStats: [], emoteStats: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL); 
-  const [collapsed, setCollapsed] = useState({ builtIn: false, custom: false, sounds: false });
+  const [collapsed, setCollapsed] = useState({ builtIn: false, custom: false, sounds: false, stats: false });
+
+  const [statsSort, setStatsSort] = useState({
+    duels: { key: 'duels_points_won', dir: 'desc' },
+    raffles: { key: 'raffles_points_won', dir: 'desc' },
+    gamble: { key: 'gamble_points_won', dir: 'desc' },
+    bets: { key: 'bets_points_won', dir: 'desc' },
+    chatwar: { key: 'chatwar_spent', dir: 'desc' },
+    emotes: { key: 'chatwar_wins', dir: 'desc' }
+  });
   const [copiedId, setCopiedId] = useState(null);
   const [volume, setVolume] = useState(0.2); // Default 20% volume
   const [soundSortBy, setSoundSortBy] = useState('date-desc');
@@ -92,13 +102,25 @@ function App() {
     setLoading(true);
     setError('');
     try {
-      // Remove trailing slash if any
       const cleanUrl = url.replace(/\/$/, '');
-      const response = await axios.get(`${cleanUrl}/api/dashboard-data`);
-      if (response.data.success) {
-        setData(response.data);
+      const [cmdRes, soundsRes, configRes, statsRes] = await Promise.all([
+        axios.get(`${cleanUrl}/api/dashboard/commands`),
+        axios.get(`${cleanUrl}/api/dashboard/sounds`),
+        axios.get(`${cleanUrl}/api/dashboard/config`),
+        axios.get(`${cleanUrl}/api/dashboard/stats`)
+      ]);
+      
+      if (cmdRes.data.success && soundsRes.data.success && configRes.data.success && statsRes.data.success) {
+        setData({
+          defaultCommands: cmdRes.data.defaultCommands,
+          customCommands: cmdRes.data.customCommands,
+          sounds: soundsRes.data.sounds,
+          rewards: configRes.data.rewards,
+          userStats: statsRes.data.userStats,
+          emoteStats: statsRes.data.emoteStats
+        });
       } else {
-        setError('Failed to fetch data: ' + response.data.error);
+        setError('Failed to fetch data from one or more endpoints.');
       }
     } catch (err) {
       setError('Could not connect to the server. Make sure your server is running and CORS is enabled.');
@@ -329,6 +351,21 @@ function App() {
                 })}
                 {filteredSounds.length === 0 && <p style={{color: 'var(--text-muted)'}}>No sounds found.</p>}
               </div>
+            </div>
+          </div>
+
+          <div className="section">
+            <h2 onClick={() => toggleSection('stats')}>
+              {collapsed.stats ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
+              <Database size={24} style={{marginRight: '8px'}}/> Leaderboards & Stats
+            </h2>
+            <div className={`section-content ${collapsed.stats ? 'collapsed' : ''}`}>
+              <Leaderboards 
+                userStats={data.userStats} 
+                emoteStats={data.emoteStats} 
+                statsSort={statsSort} 
+                setStatsSort={setStatsSort} 
+              />
             </div>
           </div>
         </>

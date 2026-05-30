@@ -404,3 +404,32 @@ body {
     box-sizing: border-box;
   }
 }
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.stats-table th, .stats-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stats-table th {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.stats-table th:hover {
+  background-color: rgba(191, 148, 255, 0.1);
+}
+
+.stats-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
