@@ -22,8 +22,8 @@ const commandInstructions = {
   '!declineduel': 'Decline a pending duel request.',
   '!disable': '!disable a command. Usage !disable  <cmd> optional<time>. sample !disable !playsound 10m',
   '!enable': 'Enable a command. Usage !enable <cmd>.  sample !enable !playsound',
-  '!raffle': 'Start a raffle. Usage !raffle <points amount> <time_in_minutes>',
-  '!multiraffle': 'Start a multi-winner raffle. Usage !multiraffle <points amount> <time_in_minutes> <number_of_winners>',
+  '!raffle': 'Start a raffle. Usage !raffle <points amount> <time_in_minutes>. Use -<amount> to deduct points.',
+  '!multiraffle': 'Start a multi-winner raffle. Usage !multiraffle <points amount> <time_in_minutes> <number_of_winners>. Use -<amount> to deduct points.',
   '!join': 'Join a raffle. Usage !join',
   '!toppoints': 'Display the top point earners. Usage: !toppoints [number] (default: 5)',
   '!editpoints': 'Edit user points. Usage: !editpoints <username> <amount>',
@@ -32,6 +32,32 @@ const commandInstructions = {
   '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s or !chatcooldown !playsound 10s',
   '!givepoints': 'Give points to users. Usage !givepoints <amount> <username>. sample !givepoints 50 username',
   '!deleteplaysound': 'Delete a playsound. Usage !deleteplaysound <soundname>. sample !deleteplaysound 5dollars',
+};
+
+const builtInAliases = {
+  '!point': '!points',
+  '!pts': '!points',
+  '!givepoint': '!givepoints',
+  '!givept': '!givepoints',
+  '!givepts': '!givepoints',
+  '!bet': '!betstart',
+  '!startbet': '!betstart',
+  '!stopbet': '!betstop',
+  '!checkbet': '!betstatus',
+  '!statusbet': '!betstatus',
+  '!editpoint': '!editpoints',
+  '!toppoint': '!toppoints',
+  '!top': '!toppoints',
+  '!leaderboard': '!toppoints',
+  '!addpoint': '!masspointsadd',
+  '!subpoint': '!masspointssub',
+  '!delcommand': '!removecommand',
+  '!deletecommand': '!removecommand',
+  '!commands': '!commandlist',
+  '!cmds': '!commandlist',
+  '!cmdlist': '!commandlist',
+  '!roulette': '!gamble',
+  '!roll': '!gamble',
 };
 
 function App() {
@@ -176,6 +202,17 @@ function App() {
                     {commandInstructions[cmd.command] && (
                       <div className="card-instruction">{commandInstructions[cmd.command]}</div>
                     )}
+                    {(() => {
+                      const aliases = Object.keys(builtInAliases).filter(alias => builtInAliases[alias] === cmd.command);
+                      if (aliases.length > 0) {
+                        return (
+                          <div className="card-instruction" style={{ marginTop: '5px', color: 'var(--text-muted)', fontSize: '0.9em' }}>
+                            <strong>Aliases: </strong> {aliases.join(', ')}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                     <div className="card-body">
                       {Object.entries(cmd.settings).map(([key, val]) => (
                         <div className="stat-row" key={key}>
