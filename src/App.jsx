@@ -69,6 +69,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [apiUrl, setApiUrl] = useState(import.meta.env.VITE_API_URL); 
   const [collapsed, setCollapsed] = useState({ builtIn: false, custom: false, sounds: false, stats: false });
+  const [activeTab, setActiveTab] = useState('home');
 
   const [statsSort, setStatsSort] = useState({
     duels: { key: 'duels_points_won', dir: 'desc' },
@@ -175,7 +176,11 @@ function App() {
   return (
     <div className="dashboard-container">
       <div className="sticky-header">
-        <h1><Database size={40} /> Overlay Dashboard</h1>
+        <div className="nav-tabs">
+          <button className={`nav-tab ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>Home</button>
+          <button className={`nav-tab ${activeTab === 'sounds' ? 'active' : ''}`} onClick={() => setActiveTab('sounds')}>Playsounds</button>
+          <button className={`nav-tab ${activeTab === 'stats' ? 'active' : ''}`} onClick={() => setActiveTab('stats')}>Leaderboards</button>
+        </div>
         
         <div className="header-controls">
           <div className="volume-control">
@@ -207,7 +212,9 @@ function App() {
         <div className="loading">Connecting to server...</div>
       ) : (
         <>
-          {data.rewards && Object.keys(data.rewards).length > 0 && (
+          {activeTab === 'home' && (
+            <>
+              {data.rewards && Object.keys(data.rewards).length > 0 && (
             <div className="section rewards-section">
               <h2><Settings size={24} style={{marginRight: '8px'}}/> Rewards Configuration</h2>
               <div className="grid">
@@ -305,9 +312,11 @@ function App() {
               </div>
             </div>
           </div>
+          </>
+          )}
 
-
-          <div className="section">
+          {activeTab === 'sounds' && (
+            <div className="section">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => toggleSection('sounds')}>
               <h2 style={{ margin: 0, display: 'flex', alignItems: 'center' }}>
                 {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
@@ -353,7 +362,9 @@ function App() {
               </div>
             </div>
           </div>
+          )}
 
+          {activeTab === 'stats' && (
           <div className="section">
             <h2 onClick={() => toggleSection('stats')}>
               {collapsed.stats ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
@@ -368,6 +379,7 @@ function App() {
               />
             </div>
           </div>
+          )}
         </>
       )}
     </div>
