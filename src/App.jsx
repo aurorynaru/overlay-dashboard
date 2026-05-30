@@ -183,23 +183,25 @@ function App() {
         </div>
         
         <div className="header-controls">
-          <button 
-            className="play-button" 
-            style={{ width: '40px', height: '40px', padding: 0 }} 
-            onClick={() => fetchData(apiUrl)} 
-            title="Refresh Data"
-          >
-            <RefreshCw size={20} className={loading ? "spin" : ""} style={{ marginLeft: 0 }} />
-          </button>
-          <div className="volume-control">
-            <Volume2 size={24} color="#bf94ff" />
-            <input 
-              type="range" 
-              min="0" max="1" step="0.01" 
-              value={volume} 
-              onChange={(e) => setVolume(parseFloat(e.target.value))}
-            />
-            <span>{Math.round(volume * 100)}%</span>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', width: '100%' }}>
+            <button 
+              className="play-button" 
+              style={{ width: '40px', height: '40px', padding: 0, flexShrink: 0 }} 
+              onClick={() => fetchData(apiUrl)} 
+              title="Refresh Data"
+            >
+              <RefreshCw size={20} className={loading ? "spin" : ""} style={{ marginLeft: 0 }} />
+            </button>
+            <div className="volume-control" style={{ flexGrow: 1 }}>
+              <Volume2 size={24} color="#bf94ff" />
+              <input 
+                type="range" 
+                min="0" max="1" step="0.01" 
+                value={volume} 
+                onChange={(e) => setVolume(parseFloat(e.target.value))}
+              />
+              <span>{Math.round(volume * 100)}%</span>
+            </div>
           </div>
 
           <div className="search-bar">
@@ -326,12 +328,13 @@ function App() {
           {activeTab === 'sounds' && (
             <div className="section">
             <div className="section-header-flex" onClick={() => toggleSection('sounds')}>
-              <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
-                <Volume2 size={24} style={{marginRight: '8px'}}/> Available Playsounds ({filteredSounds.length})
+              <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', fontSize: '1.4rem' }}>
+                {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px', flexShrink: 0}} /> : <ChevronDown size={24} style={{marginRight: '8px', flexShrink: 0}} />}
+                <Volume2 size={24} style={{marginRight: '8px', flexShrink: 0}}/>
+                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Available Playsounds ({filteredSounds.length})</span>
               </h2>
               {!collapsed.sounds && (
-                <div className="sort-controls" onClick={(e) => e.stopPropagation()}>
+                <div className="sort-controls" onClick={(e) => e.stopPropagation()} style={{ marginTop: '5px' }}>
                   <label style={{ color: 'var(--text-muted)' }}>Sort by:</label>
                   <select 
                     value={soundSortBy} 

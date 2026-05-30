@@ -40,8 +40,18 @@ body {
 .nav-tabs {
   display: flex;
   gap: 15px;
-  flex-wrap: wrap;
-  justify-content: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 5px;
+}
+
+.nav-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-tabs::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
 }
 
 .nav-tab {
