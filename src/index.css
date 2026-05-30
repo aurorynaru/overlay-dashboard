@@ -40,6 +40,8 @@ body {
 .nav-tabs {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nav-tab {
@@ -423,6 +425,29 @@ body {
     min-width: 0;
     box-sizing: border-box;
   }
+
+  .section-header-flex {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .sort-controls {
+    justify-content: flex-start;
+  }
+}
+
+.section-header-flex {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  cursor: pointer;
+}
+
+.sort-controls {
+  display: flex; 
+  gap: 10px; 
+  align-items: center;
 }
 
 .stats-table {
@@ -452,4 +477,17 @@ body {
 
 .stats-table tbody tr:hover {
   background-color: rgba(255, 255, 255, 0.02);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }

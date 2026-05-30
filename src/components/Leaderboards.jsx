@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Leaderboards = ({ userStats, emoteStats, statsSort, setStatsSort }) => {
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSort = (table, key) => {
     setStatsSort(prev => {
@@ -32,15 +33,27 @@ const Leaderboards = ({ userStats, emoteStats, statsSort, setStatsSort }) => {
     return null;
   };
 
-  const sortedDuels = getSortedData(userStats, 'duels');
-  const sortedRaffles = getSortedData(userStats, 'raffles');
-  const sortedGamble = getSortedData(userStats, 'gamble');
-  const sortedBets = getSortedData(userStats, 'bets');
-  const sortedChatwar = getSortedData(userStats, 'chatwar');
+  const filteredUsers = userStats.filter(u => !searchTerm || (u.username && u.username.toLowerCase().includes(searchTerm.toLowerCase())));
+
+  const sortedDuels = getSortedData(filteredUsers, 'duels');
+  const sortedRaffles = getSortedData(filteredUsers, 'raffles');
+  const sortedGamble = getSortedData(filteredUsers, 'gamble');
+  const sortedBets = getSortedData(filteredUsers, 'bets');
+  const sortedChatwar = getSortedData(filteredUsers, 'chatwar');
   const sortedEmotes = getSortedData(emoteStats, 'emotes');
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+
+      <div style={{ alignSelf: 'flex-start' }}>
+        <input 
+          type="text" 
+          placeholder="Search by username..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: '300px', padding: '10px 16px', background: 'var(--panel-bg)', color: 'white', border: '1px solid var(--border-color)', borderRadius: '8px', outline: 'none' }}
+        />
+      </div>
       
       {/* Duels Table */}
       <div className="card" style={{ overflowX: 'auto' }}>

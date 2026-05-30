@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown, ChevronRight, Copy } from 'lucide-react';
+import { Search, Play, Pause, Volume2, Database, Terminal, Settings, ChevronDown, ChevronRight, Copy, RefreshCw } from 'lucide-react';
 import Leaderboards from './components/Leaderboards';
 
 const commandInstructions = {
@@ -183,6 +183,14 @@ function App() {
         </div>
         
         <div className="header-controls">
+          <button 
+            className="play-button" 
+            style={{ width: '40px', height: '40px', padding: 0 }} 
+            onClick={() => fetchData(apiUrl)} 
+            title="Refresh Data"
+          >
+            <RefreshCw size={20} className={loading ? "spin" : ""} style={{ marginLeft: 0 }} />
+          </button>
           <div className="volume-control">
             <Volume2 size={24} color="#bf94ff" />
             <input 
@@ -317,13 +325,13 @@ function App() {
 
           {activeTab === 'sounds' && (
             <div className="section">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => toggleSection('sounds')}>
-              <h2 style={{ margin: 0, display: 'flex', alignItems: 'center' }}>
+            <div className="section-header-flex" onClick={() => toggleSection('sounds')}>
+              <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                 {collapsed.sounds ? <ChevronRight size={24} style={{marginRight: '8px'}} /> : <ChevronDown size={24} style={{marginRight: '8px'}} />}
                 <Volume2 size={24} style={{marginRight: '8px'}}/> Available Playsounds ({filteredSounds.length})
               </h2>
               {!collapsed.sounds && (
-                <div className="sort-controls" style={{ display: 'flex', gap: '10px', alignItems: 'center' }} onClick={(e) => e.stopPropagation()}>
+                <div className="sort-controls" onClick={(e) => e.stopPropagation()}>
                   <label style={{ color: 'var(--text-muted)' }}>Sort by:</label>
                   <select 
                     value={soundSortBy} 
