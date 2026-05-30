@@ -32,6 +32,7 @@ const commandInstructions = {
   '!chatcooldown': 'set global cooldown for chat commands. Usage: !chatcooldown <time>. sample !chatcooldown 10s or !chatcooldown !playsound 10s',
   '!givepoints': 'Give points to users. Usage !givepoints <amount> <username>. sample !givepoints 50 username',
   '!deleteplaysound': 'Delete a playsound. Usage !deleteplaysound <soundname>. sample !deleteplaysound 5dollars',
+  '!editrewards': 'Edit rewards. Usage !editrewards <type> <val1> [val2]. Types: sub, giftsub, watchstreak, raffle, multiraffle | !editrewards raffle 5000 50000 | !editrewards multiraffle 5 20 | !editrewards sub 10000',
 };
 
 const builtInAliases = {
@@ -40,7 +41,6 @@ const builtInAliases = {
   '!givepoint': '!givepoints',
   '!givept': '!givepoints',
   '!givepts': '!givepoints',
-  '!bet': '!betstart',
   '!startbet': '!betstart',
   '!stopbet': '!betstop',
   '!checkbet': '!betstatus',
@@ -58,10 +58,11 @@ const builtInAliases = {
   '!cmdlist': '!commandlist',
   '!roulette': '!gamble',
   '!roll': '!gamble',
+  '!setrewards': '!editrewards',
 };
 
 function App() {
-  const [data, setData] = useState({ defaultCommands: [], customCommands: [], sounds: [] });
+  const [data, setData] = useState({ defaultCommands: [], customCommands: [], sounds: [], rewards: {} });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -184,6 +185,33 @@ function App() {
         <div className="loading">Connecting to server...</div>
       ) : (
         <>
+          {data.rewards && Object.keys(data.rewards).length > 0 && (
+            <div className="section rewards-section">
+              <h2><Settings size={24} style={{marginRight: '8px'}}/> Rewards Configuration</h2>
+              <div className="grid">
+                <div className="card">
+                  <div className="card-header"><h3 className="card-title">Subscription</h3></div>
+                  <div className="card-body"><span className="stat-value">{data.rewards.sub} pts</span></div>
+                </div>
+                <div className="card">
+                  <div className="card-header"><h3 className="card-title">Gift Sub</h3></div>
+                  <div className="card-body"><span className="stat-value">{data.rewards.giftsub} pts</span></div>
+                </div>
+                <div className="card">
+                  <div className="card-header"><h3 className="card-title">Watch Streak</h3></div>
+                  <div className="card-body"><span className="stat-value">{data.rewards.watchstreak} pts / streak</span></div>
+                </div>
+                <div className="card">
+                  <div className="card-header"><h3 className="card-title">Raffle Points</h3></div>
+                  <div className="card-body"><span className="stat-value">{data.rewards.raffle_min} - {data.rewards.raffle_max} pts</span></div>
+                </div>
+                <div className="card">
+                  <div className="card-header"><h3 className="card-title">Multi-Raffle Winners</h3></div>
+                  <div className="card-body"><span className="stat-value">{data.rewards.multiraffle_min} - {data.rewards.multiraffle_max} winners</span></div>
+                </div>
+              </div>
+            </div>
+          )}
        
           <div className="section">
             <h2 onClick={() => toggleSection('builtIn')}>
